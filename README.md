@@ -1,2 +1,2 @@
-# VCIDIA1APA-
+# VCIDIA1APA
 Praxisprojekt VICC, ITAR, DBWE
