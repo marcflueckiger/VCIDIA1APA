@@ -257,4 +257,3 @@ def unlike_post(post_id):
     
     # Stay on the current page
     return redirect(request.referrer or url_for('main.index'))
-

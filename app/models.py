@@ -257,6 +257,7 @@ class Rating(db.Model):
             db.session.delete(rating)
             db.session.commit()
 
+    
 class Post(SearchableMixin, db.Model):
     __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
@@ -284,14 +285,7 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message {}>'.format(self.body)
-
-   # Klasse Post mit den Likes 
-    def like_count(self):
-        return self.ratings.count()
-
-    def is_liked_by(self, user):
-        return Rating.query.filter_by(user_id=user.id, post_id=self.id).count() > 0
-
+    
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
