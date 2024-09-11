@@ -269,13 +269,38 @@ class Post(SearchableMixin, db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+   
+    # to_dict() Methode für API-Ausgabe
+    def to_dict(self, include_author=True):
+        data = {
+            'id': self.id,
+            'body': self.body,
+            'timestamp': self.timestamp.isoformat() + 'Z',
+            'user_id': self.user_id,
+            'language': self.language,
+            'like_count': self.like_count()
+        }
+        if include_author:
+            data['author'] = self.author.username
+        return data
     
     def is_liked_by(self, user):
-        return Rating.query.filter_by(user_id=user.id, post_id=self.id).count() > 0
+        return self.query.filter_by(user_id=user.id, post_id=self.id).count() > 0
     
     def like_count(self):
         return self.ratings.count()
     
+    def like(self, user):
+        if not self.is_liked_by(user):
+            like = Rating(user_id=user.id, post_id=self.id)
+            db.session.add(like)
+
+    def unlike(self, user):
+        like = Rating.query.filter_by(user_id=user.id, post_id=self.id).first()
+        if like:
+            db.session.delete(like)
+
+
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
