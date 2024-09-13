@@ -299,7 +299,7 @@ class Post(SearchableMixin, db.Model):
         like = Rating.query.filter_by(user_id=user.id, post_id=self.id).first()
         if like:
             db.session.delete(like)
-
+   
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
