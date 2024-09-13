@@ -21,6 +21,7 @@ __pycache__
 
 # Installer logs
 pip-log.txt
+logs
 
 # Unit test / coverage reports
 .coverage
@@ -38,3 +39,5 @@ nosetests.xml
 venv
 app.db
 fluga.log*
+secrets
+Scripts
