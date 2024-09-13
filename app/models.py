@@ -285,7 +285,7 @@ class Post(SearchableMixin, db.Model):
         return data
     
     def is_liked_by(self, user):
-        return self.query.filter_by(user_id=user.id, post_id=self.id).count() > 0
+        return Rating.query.filter_by(user_id=user.id, post_id=self.id).count() > 0
     
     def like_count(self):
         return self.ratings.count()
@@ -299,7 +299,7 @@ class Post(SearchableMixin, db.Model):
         like = Rating.query.filter_by(user_id=user.id, post_id=self.id).first()
         if like:
             db.session.delete(like)
-   
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)

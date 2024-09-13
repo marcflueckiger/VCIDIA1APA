@@ -5,11 +5,13 @@ from app.models import Post, User
 from app.api.auth import token_auth
 from app.api.errors import bad_request
 
+# Posts mit ID auslesen
 @bp.route('/posts/<int:post_id>', methods=['GET'])
 @token_auth.login_required
 def get_post(post_id):
     return jsonify(Post.query.get_or_404(post_id).to_dict())
 
+# Alle Posts auslesen
 @bp.route('/posts', methods=['GET'])
 @token_auth.login_required
 def get_posts():
@@ -25,6 +27,7 @@ def get_posts():
     }
     return jsonify(data)
 
+# Einen neuen Post erstellen
 @bp.route('/posts', methods=['POST'])
 @token_auth.login_required
 def create_post():
@@ -34,15 +37,10 @@ def create_post():
     post = Post(body=data['body'], author=token_auth.current_user())
     db.session.add(post)
     db.session.commit()
-
-    # Hinzufügen der Like-Informationen (anfangs immer 0 Likes und "nicht geliked")
     post_data = post.to_dict()
-    post_data['like_count'] = post.like_count()
-    post_data['is_liked_by_user'] = False  # Neu erstellter Post ist nicht geliked
-    post_data['language'] = 'no'  # Neuer Post ist Standard English.
-
     return jsonify(post_data), 201, {'Location': url_for('api.get_post', post_id=post.id)}
 
+# Likes aus einem Post auslesen
 @bp.route('/posts/<int:post_id>/likes', methods=['GET'])
 @token_auth.login_required
 def get_likes(post_id):
@@ -52,12 +50,13 @@ def get_likes(post_id):
         'like_count': post.like_count()
     })
 
+# Like eines Post setzen
 @bp.route('/posts/<int:post_id>/like', methods=['POST'])
 @token_auth.login_required
 def like_unlike_post(post_id):
     post = Post.query.get_or_404(post_id)
     user = token_auth.current_user()
-    
+    # Wenn schon geliked, wird like entfernt.
     if post.is_liked_by(user):
         post.unlike(user)
         db.session.commit()
@@ -66,6 +65,7 @@ def like_unlike_post(post_id):
             'post_id': post_id,
             'like_count': post.like_count()
         })
+    # Wenn noch nicht geliked, wird like erstellt.
     else:
         post.like(user)
         db.session.commit()

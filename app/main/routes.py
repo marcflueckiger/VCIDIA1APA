@@ -242,7 +242,7 @@ def like_post(post_id):
     else:
         flash('You have already liked this post')
     
-    # Stay on the current page
+    # Auf der gleichen Seite bleiben
     return redirect(request.referrer or url_for('main.index'))
 
 
@@ -255,5 +255,5 @@ def unlike_post(post_id):
         db.session.delete(rating)
         db.session.commit()
     
-    # Stay on the current page
+    # Auf der gleichen Seite bleiben
     return redirect(request.referrer or url_for('main.index'))

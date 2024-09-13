@@ -24,10 +24,9 @@
                                 '#post{{ post.id }}',
                                 '#translation{{ post.id }}',
                                 '{{ post.language }}',
-                                '{{ g.locale }}');">{{ _('Translate') }}</a>
+                                '{{ g.locale }}');"></a>
                 </span>
-                    <!-- LIKE -->
-                    {% if current_user.is_authenticated %}
+                    <!-- LIKE Knopf anzeigen lassen. Rot, wenn geliked, Grün wenn noch nicht. -->
                     <form action="{% if post.is_liked_by(current_user) %}{{ url_for('main.unlike_post', post_id=post.id) }}{% else %}{{ url_for('main.like_post', post_id=post.id) }}{% endif %}" method="post">
                         {% if post.is_liked_by(current_user) %}
                             <button type="submit" class="btn btn-danger">Unlike</button>
@@ -36,8 +35,6 @@
                         {% endif %}
                     </form>
                     <p>{{ post.like_count() }} Likes</p>
-                    
-                    {% endif %}
                 {% endif %}
             </td>
         </tr>
