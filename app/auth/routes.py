@@ -44,7 +44,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(_('Congratulations, you are now a registered user!'))
+        flash(_('Glückwunsch, du bist registriert!'))
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title=_('Register'),
                            form=form)
@@ -77,6 +77,6 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash(_('Your password has been reset.'))
+        flash(_('Passwort zurückgesetzt.'))
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)

@@ -35,7 +35,7 @@ def index():
                     language=language)
         db.session.add(post)
         db.session.commit()
-        flash(_('Your post is now live!'))
+        flash(_('Dein Post ist nun für alle Sichtbar!'))
         return redirect(url_for('main.index'))
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(
@@ -99,7 +99,7 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash(_('Your changes have been saved.'))
+        flash(_('Gespeichert.'))
         return redirect(url_for('main.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
@@ -115,14 +115,14 @@ def follow(username):
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
-            flash(_('User %(username)s not found.', username=username))
+            flash(_('User %(username)s nicht gefunden.', username=username))
             return redirect(url_for('main.index'))
         if user == current_user:
-            flash(_('You cannot follow yourself!'))
+            flash(_('selbstverliebt?!'))
             return redirect(url_for('main.user', username=username))
         current_user.follow(user)
         db.session.commit()
-        flash(_('You are following %(username)s!', username=username))
+        flash(_('Du folgst nun %(username)s!', username=username))
         return redirect(url_for('main.user', username=username))
     else:
         return redirect(url_for('main.index'))
@@ -135,14 +135,14 @@ def unfollow(username):
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
-            flash(_('User %(username)s not found.', username=username))
+            flash(_('User %(username)s nicht gefunden.', username=username))
             return redirect(url_for('main.index'))
         if user == current_user:
-            flash(_('You cannot unfollow yourself!'))
+            flash(_('Das geht nicht!'))
             return redirect(url_for('main.user', username=username))
         current_user.unfollow(user)
         db.session.commit()
-        flash(_('You are not following %(username)s.', username=username))
+        flash(_('Du folgst nun %(username)s nicht mehr.', username=username))
         return redirect(url_for('main.user', username=username))
     else:
         return redirect(url_for('main.index'))
@@ -183,7 +183,7 @@ def send_message(recipient):
         db.session.add(msg)
         user.add_notification('unread_message_count', user.new_messages())
         db.session.commit()
-        flash(_('Your message has been sent.'))
+        flash(_('Nachricht gesendet.'))
         return redirect(url_for('main.user', username=recipient))
     return render_template('send_message.html', title=_('Send Message'),
                            form=form, recipient=recipient)
@@ -240,7 +240,7 @@ def like_post(post_id):
         db.session.add(rating)
         db.session.commit()
     else:
-        flash('You have already liked this post')
+        flash('geliked')
     
     # Auf der gleichen Seite bleiben
     return redirect(request.referrer or url_for('main.index'))
@@ -271,5 +271,5 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     
-    flash('Your post has been deleted.')
+    flash('Dein Post wurde gelöscht.')
     return redirect(url_for('main.index'))
