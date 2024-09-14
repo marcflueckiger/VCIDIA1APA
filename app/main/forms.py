@@ -10,7 +10,7 @@ class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'),
                              validators=[Length(min=0, max=140)])
-    submit = SubmitField(_l('Submit'))
+    submit = SubmitField(_l('Senden'))
 
     def __init__(self, original_username, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
@@ -24,12 +24,12 @@ class EditProfileForm(FlaskForm):
 
 
 class EmptyForm(FlaskForm):
-    submit = SubmitField('Submit')
+    submit = SubmitField('Senden')
 
 
 class PostForm(FlaskForm):
     post = TextAreaField(_l('Schreib etwas...'), validators=[DataRequired()])
-    submit = SubmitField(_l('Submit'))
+    submit = SubmitField(_l('Senden'))
 
 
 class SearchForm(FlaskForm):
@@ -46,9 +46,9 @@ class SearchForm(FlaskForm):
 class MessageForm(FlaskForm):
     message = TextAreaField(_l('Message'), validators=[
         DataRequired(), Length(min=1, max=140)])
-    submit = SubmitField(_l('Submit'))
+    submit = SubmitField(_l('Senden'))
 
 class NewsletterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     subscribe = BooleanField('Subscribe')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Senden')
