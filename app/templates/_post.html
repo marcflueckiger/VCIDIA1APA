@@ -31,7 +31,7 @@
         <td align="right">            
             {% if current_user.is_authenticated and current_user == post.author %}
             <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="post" onsubmit="return confirm('bist du dir sicher?');">
-                <button type="submit" class="btn btn-danger btn-xs"><span aria-disabled="true">del</span></button>
+                <button type="submit" class="btn btn-danger btn-xs"><span aria-disabled="true">&times;</span></button>
             </form>
             {% endif %}
         </td>
