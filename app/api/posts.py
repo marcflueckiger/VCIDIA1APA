@@ -39,8 +39,7 @@ def create_post():
     db.session.commit()
     post_data = post.to_dict()
     return jsonify(post_data), 201, {'Location': url_for('api.get_post', post_id=post.id)}
-
-
+    
 @bp.route('/posts/<int:post_id>', methods=['DELETE'])
 @token_auth.login_required
 def delete_post(post_id):

@@ -1,4 +1,4 @@
-<table border='0' class="table table-hover">
+<table class="table table-hover">
     <tr>
         <td width="70px">
             <a href="{{ url_for('main.user', username=post.author.username) }}">
@@ -27,24 +27,7 @@
                             '{{ g.locale }}');">{{ _('Translate') }}</a>
             </span>
             {% endif %}
-
-              <!-- LIKE -->
-            <form action="{% if post.is_liked_by(current_user) %}{{ url_for('main.unlike_post', post_id=post.id) }}{% else %}{{ url_for('main.like_post', post_id=post.id) }}{% endif %}" method="post">
-                {% if post.is_liked_by(current_user) %}
-                    <button type="submit" class="btn btn-danger">Unlike</button>
-                {% else %}
-                    <button type="submit" class="btn btn-success">Like</button>
-                {% endif %}
-            </form>
-            <p>{{ post.like_count() }} Likes</p>
-
-        </td>
-        <td align="right">            
-            {% if current_user.is_authenticated and current_user == post.author %}
-            <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="post" onsubmit="return confirm('bist du dir sicher?');">
-                <button type="submit" class="btn btn-danger btn-xs"><span aria-disabled="true">&times;</span></button>
-            </form>
-            {% endif %}
+           
         </td>
     </tr>
 </table>
