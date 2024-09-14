@@ -17,6 +17,7 @@
                 username=user_link, when=moment(post.timestamp).fromNow()) }}
             <br>
             <span id="post{{ post.id }}">{{ post.body }}</span>
+            <br><br>
             <!-- LIKE -->
             <form action="{% if post.is_liked_by(current_user) %}{{ url_for('main.unlike_post', post_id=post.id) }}{% else %}{{ url_for('main.like_post', post_id=post.id) }}{% endif %}" method="post">
                 {% if post.is_liked_by(current_user) %}
