@@ -19,6 +19,7 @@
             <span id="post{{ post.id }}">{{ post.body }}</span>
             <br><br>
             <!-- LIKE -->
+            {% if current_user.is_authenticated and current_user != post.author %}
             <form action="{% if post.is_liked_by(current_user) %}{{ url_for('main.unlike_post', post_id=post.id) }}{% else %}{{ url_for('main.like_post', post_id=post.id) }}{% endif %}" method="post">
                 {% if post.is_liked_by(current_user) %}
                     <button type="submit" class="btn btn-danger">Unlike</button>
@@ -26,6 +27,7 @@
                     <button type="submit" class="btn btn-success">Like</button>
                 {% endif %}
             </form>
+            {% endif %}
             <p>{{ post.like_count() }} Likes</p>
 
         </td>
