@@ -239,7 +239,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 class Rating(db.Model):
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
@@ -264,8 +264,8 @@ class Post(SearchableMixin, db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    language = db.Column(db.String(5))
-    ratings = db.relationship('Rating', lazy='dynamic')
+    language = db.Column(db.String(5), default='no')
+    ratings = db.relationship('Rating', lazy='dynamic', backref='post', cascade='all, delete-orphan')
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)

@@ -40,6 +40,20 @@ def create_post():
     post_data = post.to_dict()
     return jsonify(post_data), 201, {'Location': url_for('api.get_post', post_id=post.id)}
 
+
+@bp.route('/posts/<int:post_id>', methods=['DELETE'])
+@token_auth.login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    
+    # Sicherstellen, dass der aktuelle Benutzer der Autor des Posts ist
+    if post.author != token_auth.current_user():
+        abort(403)  # Verbietet den Zugriff, wenn nicht der Autor
+    
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify({'message': 'Post deleted successfully'})
+
 # Likes aus einem Post auslesen
 @bp.route('/posts/<int:post_id>/likes', methods=['GET'])
 @token_auth.login_required

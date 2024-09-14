@@ -257,3 +257,19 @@ def unlike_post(post_id):
     
     # Auf der gleichen Seite bleiben
     return redirect(request.referrer or url_for('main.index'))
+
+@bp.route('/delete_post/<int:post_id>', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    
+    # Prüfen, ob der aktuelle Benutzer der Autor ist
+    if post.author != current_user:
+        abort(403)  # Zugriff verbieten, wenn nicht der Autor
+    
+    # Post löschen
+    db.session.delete(post)
+    db.session.commit()
+    
+    flash('Your post has been deleted.')
+    return redirect(url_for('main.index'))
