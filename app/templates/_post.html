@@ -17,6 +17,8 @@
                 username=user_link, when=moment(post.timestamp).fromNow()) }}
             <br>
             <span id="post{{ post.id }}">{{ post.body }}</span>
+          
+            <!-- Übersetzung entfernt --> 
             {% if post.language and post.language != g.locale %}
             <br><br>
             <span id="translation{{ post.id }}">
@@ -24,7 +26,7 @@
                             '#post{{ post.id }}',
                             '#translation{{ post.id }}',
                             '{{ post.language }}',
-                            '{{ g.locale }}');">{{ _('Translate') }}</a>
+                            '{{ g.locale }}');"></a>
             </span>
             {% endif %}
             <!-- LIKE, wenn nicht eigener Post. -->
